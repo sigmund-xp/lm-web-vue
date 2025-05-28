@@ -18,6 +18,10 @@ class AuthService {
     return backend.post('/api/v1/auth/register', usuario)
   }
 
+  static verify(token) {
+    return backend.post(`/api/v1/auth/verify/${token}`, {})
+  }
+
   static refreshToken() {
     return backend.get('/api/v1/auth/refresh')
   }

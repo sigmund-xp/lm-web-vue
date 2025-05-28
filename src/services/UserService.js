@@ -16,6 +16,14 @@ class UserService {
       }
     })
   }
+
+  static register(data, token) {
+    return backend.post('/api/v1/user/register', data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
 }
 
 export default UserService

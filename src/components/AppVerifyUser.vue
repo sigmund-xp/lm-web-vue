@@ -1,36 +1,47 @@
 <template>
-  <v-container class="info-container" max-width="400">
-    <v-row justify="center">
+  <v-container class="info-container">
+    <template v-if="validToken === null">
+      <v-row justify="center">
+        <v-col cols="12" class="text-center">
+          <v-progress-circular indeterminate color="primary" />
+        </v-col>
+      </v-row>
+    </template>
+    <v-row justify="center" v-else-if="validToken">
       <v-col cols="12">
         <v-img
           :src="require('../assets/logo-lm.jpg')"
           alt="Logo Las Marías"
-          width="50%"
-          class="mb-4"
+          :width="$vuetify.display.smAndDown ? '50%' : '25%'"
+          class="mb-4 mx-auto"
         />
         <v-form @submit.prevent="register" class="w-100" max-width="400">
-          <v-row dense>
-            <v-text-field
-              v-model="usuario.name"
-              class="text-gold"
-              label="Nombre"
-              prepend-inner-icon="mdi-account"
-              required
-              readonly
-            />
-            <v-text-field
-              v-model="usuario.email"
-              class="text-gold"
-              label="Correo electrónico"
-              type="email"
-              prepend-inner-icon="mdi-email"
-              required
-              readonly
-            />
-          </v-row>
-          <v-row dense>
-            <v-col cols="12">
-              <div class="text-gold label-opacity text-body-1 mb-1">Teléfono</div>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field
+                v-model="usuario.name"
+                class="text-gold"
+                label="Nombre"
+                prepend-inner-icon="mdi-account"
+                required
+                readonly
+                hide-details
+              />
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                v-model="usuario.email"
+                class="text-gold"
+                label="Correo electrónico"
+                type="email"
+                prepend-inner-icon="mdi-email"
+                required
+                readonly
+                hide-details
+              />
+            </v-col>
+            <v-col cols="12" class="mt-0 pt-0 pb-0 mb-0">
+              <div class="text-gold label-opacity text-body-1">Teléfono</div>
             </v-col>
             <v-col cols="4">
               <v-text-field
@@ -43,6 +54,7 @@
                 type="tel"
                 @input="usuario.area = soloNumeros(usuario.area)"
                 required
+                hide-details
               />
             </v-col>
             <v-col cols="8">
@@ -55,42 +67,61 @@
                 type="tel"
                 @input="usuario.numero = soloNumeros(usuario.numero)"
                 required
+                hide-details
               />
             </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="usuario.password"
+                class="text-gold"
+                label="Contraseña"
+                prepend-inner-icon="mdi-lock"
+                type="password"
+                required
+                hide-details
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="usuario.confirmPassword"
+                class="text-gold"
+                label="Confirmar contraseña"
+                prepend-inner-icon="mdi-lock-check"
+                type="password"
+                required
+                hide-details
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-btn
+                class="text-black mb-3 d-block mx-auto"
+                color="#C5A044"
+                @click.prevent="register"
+              >
+                Registrarse
+              </v-btn>
+            </v-col>
           </v-row>
-
-          <v-text-field
-            v-model="usuario.password"
-            class="text-gold"
-            label="Contraseña"
-            prepend-inner-icon="mdi-lock"
-            type="password"
-            required
-          />
-
-          <v-text-field
-            v-model="usuario.confirmPassword"
-            class="text-gold"
-            label="Confirmar contraseña"
-            prepend-inner-icon="mdi-lock-check"
-            type="password"
-            required
-          />
-
-          <v-btn class="text-black mb-3" color="#C5A044" block @click.prevent="register">
-            Registrarse
-          </v-btn>
         </v-form>
       </v-col>
     </v-row>
-    <v-row justify="center">
-      <v-col cols="12">
-        <h2 class="text-gold mb-2">Usuario no encontrado</h2>
-        <p class="text-gold mb-6">
+    <v-row justify="center" v-else>
+      <v-col cols="12" md="6">
+        <v-img
+          :src="require('../assets/logo-lm.jpg')"
+          alt="Logo Las Marías"
+          :width="$vuetify.display.smAndDown ? '75%' : '50%'"
+          class="mb-4 mx-auto"
+        />
+        <h2 class="text-gold text-center mb-2">Usuario no encontrado</h2>
+        <p class="text-gold text-center mb-6">
           No pudimos verificar al usuario. Es posible que el enlace haya expirado o sea
           incorrecto.
         </p>
-        <v-btn class="text-black mb-3" color="#C5A044" @click.prevent="volver"
+        <v-btn
+          class="text-black mb-3 d-block mx-auto"
+          color="#C5A044"
+          @click.prevent="volver"
           >Volver</v-btn
         >
       </v-col>
@@ -114,20 +145,26 @@
 </template>
 <script setup>
 import { onMounted, nextTick, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-// import AuthService from "../services/AuthService.js";
-// import { userValidation } from "../validations/user.js";
+import { useRouter, useRoute } from "vue-router";
+import AuthService from "../services/AuthService.js";
+import UserService from "../services/UserService.js";
+import { userValidation } from "../validations/user.js";
 
 const dialog = ref(false);
 const text = ref("");
 const type = ref("warning");
 const area = ref(null);
+const validToken = ref(null);
 
 const router = useRouter();
+const route = useRoute();
+
+const token = route.params.token;
 
 const usuario = reactive({
-  name: "Juan Perez",
-  email: "mmbatti@gmail.com",
+  uid: "",
+  name: "",
+  email: "",
   area: "",
   numero: "",
   password: "",
@@ -135,12 +172,33 @@ const usuario = reactive({
 });
 
 onMounted(async () => {
+  validToken.value = await isValidToken(token);
   await nextTick();
   if (area.value) {
     area.value.focus();
   }
 });
-/*
+
+const isValidToken = async (token) => {
+  try {
+    const response = await AuthService.verify(token);
+    usuario.name = response.data.name;
+    usuario.email = response.data.email;
+    return true;
+  } catch (error) {
+    console.log("Error de red u otro: ", error.message);
+    return false;
+  }
+};
+
+onMounted(async () => {
+  validToken.value = await isValidToken(token);
+  await nextTick();
+  if (area.value) {
+    area.value.focus();
+  }
+});
+
 const formatPhone = (area, numero) => {
   return `+54 9 (${area}) ${formatearTelefono(numero)}`;
 };
@@ -153,7 +211,7 @@ const formatearTelefono = (numero) => {
   }
   return numero;
 };
-*/
+
 const soloNumeros = (valor) => {
   return valor.replace(/\D/g, "");
 };
@@ -163,23 +221,20 @@ const volver = async () => {
 };
 
 const register = () => {
-  /*
   const message = userValidation(usuario);
   if (message) {
     text.value = message;
     dialog.value = true;
   } else {
-    AuthService.register({
-      email: usuario.email,
-      phone: formatPhone(usuario.area, usuario.numero),
-      name: usuario.name,
-      role: "681bdf61dbc0b2a6c0ec75df",
-      password: usuario.password,
-    })
-      .then((response) => {
-        // TODO: setear token
-        console.log(response.data);
-        router.push("/dashboard");
+    UserService.register(
+      {
+        phone: formatPhone(usuario.area, usuario.numero),
+        password: usuario.password,
+      },
+      token
+    )
+      .then(() => {
+        router.push("/");
       })
       .catch((error) => {
         if (error.response) {
@@ -192,7 +247,6 @@ const register = () => {
         }
       });
   }
-*/
 };
 </script>
 <style scoped>

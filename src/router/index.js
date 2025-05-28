@@ -16,7 +16,7 @@ const routes = [
     component: AppLogin
   },
   {
-    path: '/verify',
+    path: '/verify/:token(.*)',
     name: 'verify',
     component: AppVerifyUser
   },
