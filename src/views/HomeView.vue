@@ -1,5 +1,9 @@
 <template>
-  <AppHeader v-if="loaded" @showAddOwner="showAddOwner" />
+  <AppHeader
+    v-if="loaded"
+    @showAddOwner="showAddOwner"
+    @showAddVeterinarian="showAddVeterinarian"
+  />
   <v-container
     v-if="loaded && (currentView === 'horseList' || currentView === 'dashboard')"
     class="gold-border filter-container py-0 pl-2 pr-2"
@@ -15,7 +19,7 @@
     :sendLogin="dialogSendLogin"
     @update:modelValue="handleAlertClose"
   />
-  <AppOwnerDialog v-model="showDialogAddOwner" @created="addOwnerUser" />
+  <AppAddUserDialog v-model="showDialogAddUser" :userType="userType" @created="addUser" />
 </template>
 
 <script setup>
@@ -27,7 +31,7 @@ import AppFilterAdmin from "../components/AppFilterAdmin.vue";
 import AppHorseCard from "../components/AppHorseCard.vue";
 import AppUserProfile from "../components/AppUserProfile.vue";
 import AppAlert from "../components/AppAlert.vue";
-import AppOwnerDialog from "../components/AppOwnerDialog.vue";
+import AppAddUserDialog from "../components/dialog/AppAddUserDialog.vue";
 
 import { useAuthStore } from "../stores/auth.js";
 import { useUserInfoStore } from "../stores/user.js";
@@ -43,7 +47,8 @@ const dialogVisible = ref(false);
 const dialogSendLogin = ref(false);
 const dialogText = ref("");
 const dialogType = ref("warning");
-const showDialogAddOwner = ref(false);
+const showDialogAddUser = ref(false);
+const userType = ref("");
 const currentView = ref("horseList");
 
 onBeforeMount(() => {
@@ -86,19 +91,23 @@ const handleAlertClose = (sendToLogin) => {
 };
 
 const showAddOwner = (value) => {
-  showDialogAddOwner.value = value;
+  userType.value = "P";
+  showDialogAddUser.value = value;
 };
 
-const addOwnerUser = async (user) => {
-  console.log(user);
+const showAddVeterinarian = (value) => {
+  userType.value = "V";
+  showDialogAddUser.value = value;
+};
+
+const addUser = async (user) => {
   try {
     await UserService.createUser(user, auth.token);
     dialogText.value = "Usuario creado.";
     dialogType.value = "info";
     dialogVisible.value = true;
-    showDialogAddOwner.value = false;
+    showDialogAddUser.value = false;
   } catch (error) {
-    console.log();
     dialogText.value = error.response.data.error;
     dialogType.value = "warning";
     dialogVisible.value = true;

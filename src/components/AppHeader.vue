@@ -65,31 +65,36 @@ const buildMenu = (rol) => {
     icon: "mdi-card-account-details-outline",
     action: "goProfile",
   });
-  switch (rol[0]) {
-    case "A":
+  if (rol[0] === "V") {
+    items.push({
+      text: "Historia clinica",
+      icon: "mdi-file",
+      action: "goHome",
+    });
+  } else {
+    if (rol[0] === "A") {
       items.push({
         text: "Agregar un Propietario",
         icon: "mdi-account-plus-outline",
         action: "addOwner",
       });
+    } else {
       items.push({
-        text: "Agregar un Veterinario",
-        icon: "mdi-medical-bag",
-        action: "goHome",
+        text: "Agregar un Caballo",
+        icon: "mdi-horse-variant",
+        action: "addHorse",
       });
-      items.push({
-        text: "Agregar un Herrador",
-        icon: "mdi-horseshoe",
-        action: "goHome",
-      });
-      break;
-    case "P":
-      items.push([
-        { text: "Agregar un Caballo", icon: "mdi-horse-variant", action: "goHome" },
-        { text: "Agregar un Veterinario", icon: "mdi-medical-bag", action: "goHome" },
-        { text: "Agregar un Herrador", icon: "mdi-horseshoe", action: "goHome" },
-      ]);
-      break;
+    }
+    items.push({
+      text: "Agregar un Veterinario",
+      icon: "mdi-medical-bag",
+      action: "addVeterinarian",
+    });
+    items.push({
+      text: "Agregar un Herrador",
+      icon: "mdi-horseshoe",
+      action: "goHome",
+    });
   }
   items.push({ text: "Cerrar sesión", icon: "mdi-logout", action: "logout" });
 };
@@ -99,6 +104,10 @@ const handleMenuClick = (item) => {
     case "addOwner":
       drawer.value = false;
       emit("showAddOwner", true);
+      break;
+    case "addVeterinarian":
+      drawer.value = false;
+      emit("showAddVeterinarian", true);
       break;
     case "goProfile":
       router.push("/perfil");

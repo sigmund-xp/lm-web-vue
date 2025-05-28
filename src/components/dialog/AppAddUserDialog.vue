@@ -6,7 +6,7 @@
     persistent
   >
     <v-card class="pt-0 pl-5 pr-5" color="#111111">
-      <v-card-title class="text-gold">Agregar Propietario</v-card-title>
+      <v-card-title class="text-gold">Agregar {{ getTittle() }}</v-card-title>
       <v-text-field
         v-model="usuario.name"
         class="text-gold"
@@ -36,7 +36,13 @@
 <script setup>
 import { defineProps, ref, watch, defineEmits, reactive } from "vue";
 
-const props = defineProps({ modelValue: Boolean });
+const props = defineProps({
+  modelValue: Boolean,
+  userType: {
+    type: String,
+    required: true,
+  },
+});
 const emit = defineEmits(["update:modelValue", "created"]);
 
 const dialog = ref(false);
@@ -54,6 +60,7 @@ watch(
     if (val) {
       usuario.name = "";
       usuario.email = "";
+      usuario.kind = props.userType;
     }
   }
 );
@@ -69,6 +76,16 @@ const close = () => {
 const agregar = () => {
   if (!usuario.name || !usuario.email) return;
   emit("created", { ...usuario });
+};
+
+const getTittle = () => {
+  switch (props.userType) {
+    case "V":
+      return "Veterinario";
+    case "P":
+    default:
+      return "Propietario";
+  }
 };
 </script>
 
