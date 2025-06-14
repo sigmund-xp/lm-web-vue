@@ -4,9 +4,58 @@
 .gold-top-border {
   border-top: 1px solid #C5A044 !important;
 }
+.gold-all-border {
+  border: 3px solid #C5A044 !important;
+}
 .text-gold {
   color: #C5A044 !important;
 }
 .dark-color {
   background-color: #111111 !important;
+}
+.custom-combobox-menu .v-list {
+  background-color: #111111 !important;
+  color: #C5A044 !important;
+}
+
+.custom-combobox-menu .v-list-item:hover {
+  background-color: rgba(197, 160, 68, 0.1) !important;
+}
+
+.custom-combobox-menu .v-list-item--active {
+  color: rgb(197, 160, 68) !important;
+}
+
+.v-field {
+  color: #C5A044 !important;
+}
+
+.v-combobox .v-field__input, 
+.v-combobox .v-field__input input::placeholder,
+.v-combobox .v-label {
+  color: #C5A044 !important;
+  opacity: 1 !important;
+}
+
+.v-combobox .v-field__input input {
+  color: #C5A044 !important;
+}
+
+.v-table__wrapper {
+  background-color: #111111 !important;
+}
+
+.v-table .v-table__wrapper table {
+  border-collapse: collapse;
+}
+.v-table td, 
+.v-table th {
+  border: none !important;
+}
+.v-table thead tr {
+  border-bottom: 1px solid #C5A044 !important;
+}
+.v-table td {
+  margin-top: 60px;
+  margin-bottom: 60px;
 }

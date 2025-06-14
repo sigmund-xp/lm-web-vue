@@ -1,29 +1,68 @@
-import '../assets/main.css'
+import '@/assets/main.css'
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import AppLogin from '../components/AppLogin.vue'
-import AppVerifyUser from '../components/AppVerifyUser.vue'
+import HomeView from '@/views/HomeView.vue'
+import VeterinarianView from '@/views/HomeView.vue'
+import OwnerView from '@/views/HomeView.vue'
+import FarrierView from '@/views/FarrierView.vue'
+import LoginView from '@/views/LoginView.vue'
+import StaticLandingView from '@/views/StaticLandingView.vue'
+import ProfileView from '@/views/ProfileView.vue'
+import AuthLayout from '@/layouts/AuthLayout.vue'
+import MainLayout from '@/layouts/MainLayout.vue'
+import VerifyUserComponent from '@/components/VerifyUserComponent.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'rootLogin',
-    component: AppLogin
+    name: 'homeStatic',
+    component: StaticLandingView
   },
   {
-    path: '/login',
-    name: 'login',
-    component: AppLogin
+    path: '/',
+    component: AuthLayout,    
+    children: [
+      {
+        path: 'login',
+        name: 'rootLogin',
+        component: LoginView
+      },
+      {
+        path: '/verify/:token(.*)',
+        name: 'verify',
+        component: VerifyUserComponent
+      }
+    ]
   },
   {
-    path: '/verify/:token(.*)',
-    name: 'verify',
-    component: AppVerifyUser
-  },
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: HomeView
+    path: '/',
+    component: MainLayout,
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: HomeView
+      },
+      {
+        path: 'veterinarian',
+        name: 'veterinarian',
+        component: VeterinarianView
+      },
+      {
+        path: 'owner',
+        name: 'owner',
+        component: OwnerView
+      },
+      {
+        path: 'farrier',
+        name: 'farrier',
+        component: FarrierView
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: ProfileView
+      }
+    ]
   }
 ]
 

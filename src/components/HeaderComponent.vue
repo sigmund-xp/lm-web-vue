@@ -1,9 +1,17 @@
 <template>
-  <v-toolbar height="70" class="text-white gold-border" color="#111111">
-    <div class="d-flex align-center ml-4" style="min-width: 120px">
-      <v-img :src="require('../assets/logo-lm-header.jpg')" height="60" contain />
+  <v-toolbar height="100" class="text-white gold-border px-2" color="#111111">
+    <div class="d-none d-sm-flex align-left" style="min-width: 200px">
+      <v-img
+        :src="require('../assets/logo-lm-header.png')"
+        height="80"
+        contain
+        @click="router.push('/dashboard')"
+      />
     </div>
-    <div class="d-flex align-center">
+    <div class="d-flex d-sm-none align-left" style="min-width: 120px">
+      <v-img :src="require('../assets/logo-lm-header.png')" height="50" contain />
+    </div>
+    <div class="d-flex align-center flex-grow-1 ml-4">
       <div class="user-info text-left">
         <div class="username">{{ userInfo.info.name }}</div>
         <div class="user-role">{{ userInfo.info.role.description }}</div>
@@ -25,9 +33,9 @@
         :key="i"
         :value="item"
         class="text-gold"
+        :prepend-icon="item.icon"
         @click="handleMenuClick(item)"
       >
-        <template v-slot:prepend><v-icon :icon="item.icon" /></template>
         <v-list-item-title v-text="item.text"></v-list-item-title>
       </v-list-item>
     </v-list>
@@ -35,72 +43,82 @@
 </template>
 
 <script setup>
-import { onBeforeMount, defineEmits, ref } from "vue";
+import { watch, defineEmits, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth.js";
 import { useUserInfoStore } from "../stores/user.js";
 import AuthService from "../services/AuthService.js";
 
-const emit = defineEmits(["showAddOwner"]);
+const emit = defineEmits(["showAddOwner", "showAddVeterinarian"]);
 
 const drawer = ref(false);
 const router = useRouter();
 const auth = useAuthStore();
 const userInfo = useUserInfoStore();
 
-let items = [];
+const items = ref([]);
 
-onBeforeMount(() => {
-  buildMenu(userInfo.info.role.description);
-});
-//mdi-card-account-details-outline
-//mdi-account-plus-outline
-//mdi-hospital-box-outline
-//mdi-horseshoe
-//mdi-medical-bag
-//mdi-text-account
 const buildMenu = (rol) => {
-  items.push({
+  items.value = [];
+  items.value.push({
+    text: "Inicio",
+    icon: "mdi-home",
+    action: "goHome",
+  });
+  items.value.push({
     text: "Mi perfil",
     icon: "mdi-card-account-details-outline",
     action: "goProfile",
   });
   if (rol[0] === "V") {
-    items.push({
+    items.value.push({
       text: "Historia clinica",
-      icon: "mdi-file",
+      icon: "mdi-file-document-multiple-outline",
       action: "goHome",
     });
   } else {
     if (rol[0] === "A") {
-      items.push({
+      items.value.push({
         text: "Agregar un Propietario",
         icon: "mdi-account-plus-outline",
         action: "addOwner",
       });
     } else {
-      items.push({
+      items.value.push({
         text: "Agregar un Caballo",
         icon: "mdi-horse-variant",
         action: "addHorse",
       });
     }
-    items.push({
+    items.value.push({
       text: "Agregar un Veterinario",
       icon: "mdi-medical-bag",
       action: "addVeterinarian",
     });
-    items.push({
-      text: "Agregar un Herrador",
+    items.value.push({
+      text: "Herradores",
       icon: "mdi-horseshoe",
-      action: "goHome",
+      action: "goFarrierList",
     });
   }
-  items.push({ text: "Cerrar sesión", icon: "mdi-logout", action: "logout" });
+  items.value.push({ text: "Cerrar sesión", icon: "mdi-logout", action: "logout" });
 };
+
+watch(
+  () => userInfo.info,
+  (val) => {
+    if (val && val.role?.description) {
+      buildMenu(val.role.description);
+    }
+  },
+  { immediate: true }
+);
 
 const handleMenuClick = (item) => {
   switch (item.action) {
+    case "goHome":
+      router.push("/dashboard");
+      break;
     case "addOwner":
       drawer.value = false;
       emit("showAddOwner", true);
@@ -110,11 +128,14 @@ const handleMenuClick = (item) => {
       emit("showAddVeterinarian", true);
       break;
     case "goProfile":
-      router.push("/perfil");
+      router.push("/profile");
+      break;
+    case "goFarrierList":
+      router.push("/farrier");
       break;
     case "logout":
       logout();
-      router.push("/");
+      router.push("/login");
       break;
   }
 };
@@ -123,7 +144,7 @@ const logout = async () => {
   try {
     await AuthService.logout(auth.token);
     auth.clearToken();
-    router.push("/");
+    router.push("/login");
   } catch (error) {
     console.log(error);
   }
@@ -132,20 +153,49 @@ const logout = async () => {
 
 <style scoped>
 .user-info {
-  display: flex;
-  flex-direction: column;
   color: #c5a044;
   font-size: 0.95rem;
   line-height: 1.2;
-  padding-left: 1.5rem;
+  max-width: 160px;
 }
 .username {
   font-weight: bold;
   font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .user-role {
   font-style: italic;
   font-size: 0.85rem;
   color: #c5a044;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 600px) {
+  .user-info {
+    max-width: 300px;
+  }
+
+  .username {
+    font-size: 1.1rem;
+  }
+
+  .user-role {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .username {
+    font-size: 1.2rem;
+  }
+
+  .user-role {
+    font-size: 1rem;
+  }
 }
 </style>

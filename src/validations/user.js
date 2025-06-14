@@ -28,20 +28,28 @@ const validarPassword = (password) => {
   return true
 }
 
-export const userValidation = (usuario) => {
+export const userDataValidation = (usuario) => {
+  let msg = ""
   if (usuario.name === '') {
-    return "El nombre no puede estar vacio"
+    msg = "El nombre no puede estar vacio"
   } else if (!validateEmail(usuario.email)) {
-    return "El formato del email es incorrecto"
-  } else if (!validarArea(usuario.area)) {
-    return "El área debe tener entre 2 y 4 dígitos"
-  } else if (!validarNumero(usuario.numero)) {
-    return "El número de teléfono debe tener entre 6 y 8 dígitos"
-  } else if (!validarPassword(usuario.password)) {
-    return "La contraseña debe tener al menos una mayúscula, una minúscula, un número y como mínimo 6 caracteres"
-  } else if (usuario.password != usuario.confirmPassword) {
-    return "Las contraseñas no coinciden"
-  } else {
-    return ""
+    msg = "El formato del email es incorrecto"
+  } else if (!validarArea(usuario.phoneArea)) {
+    msg = "El área debe tener entre 2 y 4 dígitos"
+  } else if (!validarNumero(usuario.phoneNumber)) {
+    msg = "El número de teléfono debe tener entre 6 y 8 dígitos"
   }
+  return msg
+}
+
+export const userValidation = (usuario) => {
+  let msg = userDataValidation(usuario)
+  if (msg === '') {
+    if (!validarPassword(usuario.password)) {
+      msg = "La contraseña debe tener al menos una mayúscula, una minúscula, un número y como mínimo 6 caracteres"
+    } else if (usuario.password != usuario.confirmPassword) {
+      msg = "Las contraseñas no coinciden"
+    }
+  }
+  return msg
 }

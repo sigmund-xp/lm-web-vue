@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { watch, ref } from "vue";
 import { useHorsesStore } from "../stores/horses.js";
 import { useUserInfoStore } from "../stores/user.js";
 
@@ -46,11 +46,18 @@ const store = useHorsesStore();
 const horseName = ref("");
 const ownerName = ref("");
 const rol = ref("");
+
 const userInfo = useUserInfoStore();
 
-onBeforeMount(() => {
-  rol.value = userInfo.info.role.description[0];
-});
+watch(
+  () => userInfo.info,
+  (info) => {
+    if (info?.role?.description) {
+      rol.value = info.role.description[0];
+    }
+  },
+  { immediate: true } // para que se ejecute también si ya está cargado
+);
 
 const searchHorses = () => {
   switch (rol.value) {
@@ -93,7 +100,7 @@ const searchHorses = () => {
   padding: 0.5rem 1rem;
   border-radius: 5px;
   border: 1px solid #c5a044;
-  background-color: #000;
+  background-color: #111;
   color: #fff;
 }
 .buttonFilter {

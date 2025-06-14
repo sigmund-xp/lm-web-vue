@@ -10,7 +10,7 @@
     <v-row justify="center" v-else-if="validToken">
       <v-col cols="12">
         <v-img
-          :src="require('../assets/logo-lm.jpg')"
+          :src="require('../assets/logo-lm.png')"
           alt="Logo Las Marías"
           :width="$vuetify.display.smAndDown ? '50%' : '25%'"
           class="mb-4 mx-auto"
@@ -25,7 +25,6 @@
                 prepend-inner-icon="mdi-account"
                 required
                 readonly
-                hide-details
               />
             </v-col>
             <v-col cols="12" md="6">
@@ -37,7 +36,6 @@
                 prepend-inner-icon="mdi-email"
                 required
                 readonly
-                hide-details
               />
             </v-col>
             <v-col cols="12" class="mt-0 pt-0 pb-0 mb-0">
@@ -45,29 +43,27 @@
             </v-col>
             <v-col cols="4">
               <v-text-field
-                v-model="usuario.area"
+                v-model="usuario.phoneArea"
                 ref="area"
                 class="text-gold"
                 label="Área"
                 maxlength="4"
                 prepend-inner-icon="mdi-map-marker"
                 type="tel"
-                @input="usuario.area = soloNumeros(usuario.area)"
+                @input="usuario.phoneArea = soloNumeros(usuario.phoneArea)"
                 required
-                hide-details
               />
             </v-col>
             <v-col cols="8">
               <v-text-field
-                v-model="usuario.numero"
+                v-model="usuario.phoneNumber"
                 class="text-gold"
                 label="Número"
                 maxlength="8"
                 prepend-inner-icon="mdi-phone"
                 type="tel"
-                @input="usuario.numero = soloNumeros(usuario.numero)"
+                @input="usuario.phoneNumber = soloNumeros(usuario.phoneNumber)"
                 required
-                hide-details
               />
             </v-col>
             <v-col cols="12">
@@ -78,7 +74,6 @@
                 prepend-inner-icon="mdi-lock"
                 type="password"
                 required
-                hide-details
               />
             </v-col>
             <v-col cols="12">
@@ -89,7 +84,6 @@
                 prepend-inner-icon="mdi-lock-check"
                 type="password"
                 required
-                hide-details
               />
             </v-col>
             <v-col cols="12">
@@ -108,7 +102,7 @@
     <v-row justify="center" v-else>
       <v-col cols="12" md="6">
         <v-img
-          :src="require('../assets/logo-lm.jpg')"
+          :src="require('../assets/logo-lm.png')"
           alt="Logo Las Marías"
           :width="$vuetify.display.smAndDown ? '75%' : '50%'"
           class="mb-4 mx-auto"
@@ -165,8 +159,8 @@ const usuario = reactive({
   uid: "",
   name: "",
   email: "",
-  area: "",
-  numero: "",
+  phoneArea: "",
+  phoneNumber: "",
   password: "",
   confirmPassword: "",
 });
@@ -199,11 +193,7 @@ onMounted(async () => {
   }
 });
 
-const formatPhone = (area, numero) => {
-  return `+54 9 (${area}) ${formatearTelefono(numero)}`;
-};
-
-const formatearTelefono = (numero) => {
+const formatPhone = (numero) => {
   const largo = numero.length;
 
   if (largo > 4) {
@@ -217,7 +207,7 @@ const soloNumeros = (valor) => {
 };
 
 const volver = async () => {
-  router.push("/");
+  router.push("/login");
 };
 
 const register = () => {
@@ -228,13 +218,14 @@ const register = () => {
   } else {
     UserService.register(
       {
-        phone: formatPhone(usuario.area, usuario.numero),
+        phoneArea: usuario.phoneArea,
+        phoneNumber: formatPhone(usuario.phoneNumber),
         password: usuario.password,
       },
       token
     )
       .then(() => {
-        router.push("/");
+        router.push("/login");
       })
       .catch((error) => {
         if (error.response) {

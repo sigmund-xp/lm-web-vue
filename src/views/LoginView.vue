@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col cols="12">
         <v-img
-          :src="require('../assets/logo-lm.jpg')"
+          :src="require('../assets/logo-lm.png')"
           alt="Logo Las Marías"
           class="mb-6"
           width="100%"
@@ -18,7 +18,6 @@
             type="email"
             ref="email"
             prepend-inner-icon="mdi-email"
-            required
           />
 
           <v-text-field
@@ -27,7 +26,6 @@
             label="Contraseña"
             type="password"
             prepend-inner-icon="mdi-lock"
-            required
           />
 
           <v-btn class="text-black mb-3" color="#C5A044" block @click.prevent="login">
@@ -36,15 +34,15 @@
         </v-form>
       </v-col>
     </v-row>
-    <AppAlert v-model="dialogVisible" :text="dialogText" :type="dialogType" />
+    <AlertComponent v-model="dialogVisible" :text="dialogText" :type="dialogType" />
   </v-container>
 </template>
 
 <script setup>
 import { reactive, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
-import AuthService from "../services/AuthService.js";
-import AppAlert from "./AppAlert.vue";
+import AuthService from "@/services/AuthService.js";
+import AlertComponent from "@/components/AlertComponent.vue";
 
 const router = useRouter();
 

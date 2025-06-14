@@ -24,6 +24,14 @@ class UserService {
       }
     })
   }
+
+  static modifyProfile(data, token) {
+    return backend.patch('/api/v1/user/profile', data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
 }
 
 export default UserService

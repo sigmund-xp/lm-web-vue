@@ -5,7 +5,7 @@
     width="500px"
     persistent
   >
-    <v-card class="pt-0 pl-5 pr-5" color="#111111">
+    <v-card class="pt-0 pl-5 pr-5" color="#1E1E1E">
       <v-card-title class="text-gold">Agregar {{ getTittle() }}</v-card-title>
       <v-text-field
         v-model="usuario.name"
@@ -21,6 +21,18 @@
         type="email"
         prepend-inner-icon="mdi-email"
         required
+      />
+      <v-combobox
+        v-if="props.userType === 'V'"
+        v-model="selectedItem"
+        :items="props.especialidades"
+        label="Selecciona un especialidad"
+        variant="outlined"
+        color="#C5A044"
+        :menu-props="{
+          contentClass: 'custom-combobox-menu',
+          color: '#C5A044',
+        }"
       />
       <v-card-actions class="px-5 pb-4">
         <v-btn color="#C5A044" variant="flat" class="text-black" @click.prevent="agregar">
@@ -42,7 +54,9 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  especialidades: { type: [String] },
 });
+
 const emit = defineEmits(["update:modelValue", "created"]);
 
 const dialog = ref(false);
@@ -52,6 +66,8 @@ const usuario = reactive({
   email: "",
   kind: "P",
 });
+
+const selectedItem = ref(null);
 
 watch(
   () => props.modelValue,
