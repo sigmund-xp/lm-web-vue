@@ -316,9 +316,7 @@
               ></v-btn>
             </div>
             <v-divider color="#C5A044" class="my-4"></v-divider>
-            <p class="text-grey-lighten-2 mt-4">
-              © 2025 Las Marías. Todos los derechos reservados.
-            </p>
+            <p class="text-grey-lighten-2 mt-4">© 2025 Las Marías Centro Equestre.</p>
           </v-col>
         </v-row>
       </v-container>
