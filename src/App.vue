@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { useUIStore } from "@/stores/uiStore";
+import { useUIStore } from "@/stores/ui.js";
 import LoadingScreen from "@/components/LoadingScreen.vue";
 
 const ui = useUIStore();
