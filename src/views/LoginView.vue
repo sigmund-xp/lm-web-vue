@@ -65,10 +65,11 @@ const usuario = reactive({
 
 const login = async () => {
   try {
-    await AuthService.login({
+    const response = await AuthService.login({
       email: usuario.email,
       password: usuario.password,
     });
+    console.log(JSON.stringify(response));
     router.push("/dashboard");
   } catch (error) {
     dialogText.value = error.response.data.error;
