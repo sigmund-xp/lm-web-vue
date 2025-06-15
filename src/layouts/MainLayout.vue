@@ -30,7 +30,7 @@ import AlertComponent from "@/components/AlertComponent.vue";
 import AddUserDialogComponent from "@/components/dialog/AddUserDialogComponent.vue";
 
 import UserService from "@/services/UserService.js";
-import AuthService from "@/services/AuthService.js";
+//import AuthService from "@/services/AuthService.js";
 import ParamService from "@/services/ParamService.js";
 
 import { useUserInfoStore } from "@/stores/user.js";
@@ -55,7 +55,7 @@ onBeforeMount(() => {
 });
 
 async function actualizarInfo() {
-  await refreshAuth();
+  //await refreshAuth();
   await getParams();
   await getUserInfo();
   loaded.value = true;
@@ -83,7 +83,7 @@ const getUserInfo = async () => {
   }
 };
 
-const refreshAuth = async () => {
+/*const refreshAuth = async () => {
   try {
     const response = await AuthService.refreshToken();
     auth.setToken(response.data.token);
@@ -94,7 +94,7 @@ const refreshAuth = async () => {
     dialogVisible.value = true;
     dialogSendLogin.value = true;
   }
-};
+};*/
 
 const handleAlertClose = (sendToLogin) => {
   if (sendToLogin === true) {

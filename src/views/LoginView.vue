@@ -41,10 +41,12 @@
 <script setup>
 import { reactive, ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth.js";
 import AuthService from "@/services/AuthService.js";
 import AlertComponent from "@/components/AlertComponent.vue";
 
 const router = useRouter();
+const auth = useAuthStore();
 
 const dialogVisible = ref(false);
 const dialogText = ref("");
@@ -70,6 +72,7 @@ const login = async () => {
       password: usuario.password,
     });
     console.log(JSON.stringify(response));
+    await auth.setToken(response.data.token);
     router.push("/dashboard");
   } catch (error) {
     dialogText.value = error.response.data.error;
