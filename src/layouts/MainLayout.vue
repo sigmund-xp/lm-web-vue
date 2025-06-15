@@ -19,18 +19,19 @@
     :especialidades="param.params.especialidades"
     @created="addUser"
   />
+  <LoadingOverlay v-if="!loaded" />
 </template>
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import { useRouter } from "vue-router";
 
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 import AlertComponent from "@/components/AlertComponent.vue";
 import AddUserDialogComponent from "@/components/dialog/AddUserDialogComponent.vue";
 
 import UserService from "@/services/UserService.js";
-//import AuthService from "@/services/AuthService.js";
 import ParamService from "@/services/ParamService.js";
 
 import { useUserInfoStore } from "@/stores/user.js";
@@ -55,7 +56,6 @@ onBeforeMount(() => {
 });
 
 async function actualizarInfo() {
-  //await refreshAuth();
   await getParams();
   await getUserInfo();
   loaded.value = true;
@@ -82,19 +82,6 @@ const getUserInfo = async () => {
     dialogVisible.value = true;
   }
 };
-
-/*const refreshAuth = async () => {
-  try {
-    const response = await AuthService.refreshToken();
-    auth.setToken(response.data.token);
-  } catch (error) {
-    console.log(error);
-    dialogText.value =
-      "Acceso restringido. Esta función no está disponible para tu perfil.";
-    dialogVisible.value = true;
-    dialogSendLogin.value = true;
-  }
-};*/
 
 const handleAlertClose = (sendToLogin) => {
   if (sendToLogin === true) {

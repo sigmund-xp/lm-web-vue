@@ -35,6 +35,7 @@
       </v-col>
     </v-row>
     <AlertComponent v-model="dialogVisible" :text="dialogText" :type="dialogType" />
+    <LoadingOverlay v-if="ui.loading" />
   </v-container>
 </template>
 
@@ -45,6 +46,7 @@ import { useAuthStore } from "@/stores/auth.js";
 import { useUIStore } from "@/stores/ui.js";
 import AuthService from "@/services/AuthService.js";
 import AlertComponent from "@/components/AlertComponent.vue";
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
 
 const router = useRouter();
 const auth = useAuthStore();
