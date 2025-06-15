@@ -4,7 +4,7 @@
     @showAddOwner="showAddOwner"
     @showAddVeterinarian="showAddVeterinarian"
   />
-  <router-view></router-view>
+  <router-view v-if="loaded"></router-view>
   <FooterComponent />
   <AlertComponent
     v-model="dialogVisible"
