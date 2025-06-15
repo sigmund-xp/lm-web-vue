@@ -1,19 +1,17 @@
 <template>
   <v-app>
-    <v-main class="dark-color">
+    <LoadingScreen v-if="ui.loading" />
+    <v-main v-else class="dark-color">
       <router-view />
     </v-main>
   </v-app>
 </template>
 
-<script>
-export default {
-  name: "App",
+<script setup>
+import { useUIStore } from "@/stores/uiStore";
+import LoadingScreen from "@/components/LoadingScreen.vue";
 
-  data: () => ({
-    //
-  }),
-};
+const ui = useUIStore();
 </script>
 
 <style scoped>
