@@ -10,6 +10,6 @@
 
 <style scoped>
 .v-application {
-  overflow-y: hidden;
+  overflow: hidden;
 }
 </style>

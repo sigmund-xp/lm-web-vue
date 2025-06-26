@@ -8,7 +8,11 @@
       class="border-b border-yellow-darken-2 px-0"
       height="100"
     >
-      <v-container class="d-flex justify-space-between align-center" fluid>
+      <v-container
+        class="d-flex flex-wrap justify-space-between align-center px-2"
+        style="max-width: 100%; overflow-x: hidden"
+        fluid
+      >
         <v-img
           :src="require('../assets/logo-lm-header.png')"
           height="80"
@@ -23,10 +27,13 @@
           no-gutters
           style="flex: none; padding-right: 1em"
         >
-          <v-btn class="black-pure ml-1" to="#inicio">Inicio</v-btn>
-          <v-btn class="black-pure ml-1" to="#clases">Clases</v-btn>
-          <v-btn class="black-pure ml-1" to="#venta">Venta de Caballos</v-btn>
-          <v-btn class="black-pure ml-1" to="#contacto">Contacto</v-btn>
+          <v-btn class="black-pure ml-1" @click.prevent="scrollTo('clases')"
+            >Clases</v-btn
+          >
+          <v-btn class="black-pure ml-1" @click.prevent="scrollTo('venta')"
+            >Venta de Caballos</v-btn
+          >
+          <v-btn class="black-pure ml-1" to="/contacto">Contacto</v-btn>
         </v-row>
         <v-btn
           class="text-black bg-gold font-weight-bold d-none d-md-inline-flex"
@@ -34,32 +41,31 @@
           to="/login"
           >Ingresar</v-btn
         >
-        <v-app-bar-nav-icon class="d-md-none" @click="mobileMenu = !mobileMenu" />
+        <v-app-bar-nav-icon
+          class="d-md-none text-gold"
+          @click="mobileMenu = !mobileMenu"
+        />
       </v-container>
     </v-app-bar>
     <v-navigation-drawer
       v-model="mobileMenu"
+      location="right"
       temporary
-      location="top"
-      class="d-md-none"
-      color="black"
+      style="top: 80px"
+      color="#111"
     >
       <v-list>
         <v-list-item
           v-for="item in navItems"
           :key="item.text"
-          :to="item.to"
-          @click="mobileMenu = false"
+          :href="item.to"
+          tag="a"
+          class="drawer-link"
+          @click="handleMenuClick(item)"
         >
-          <v-list-item-title class="text-gold">{{ item.text }}</v-list-item-title>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
         </v-list-item>
       </v-list>
-      <v-btn
-        class="mt-6 gold-back text-black font-weight-bold d-none d-md-inline-flex"
-        rounded
-        to="./login"
-        >Ingresar</v-btn
-      >
     </v-navigation-drawer>
     <v-main id="inicio">
       <div
@@ -414,6 +420,16 @@ const caballos = [
     ],
   },
 ];
+const handleMenuClick = (item) => {
+  scrollTo(item.to);
+  mobileMenu.value = false;
+};
+const scrollTo = (id) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+};
 </script>
 <style scoped>
 html {
@@ -504,6 +520,16 @@ ul {
 .v-chip {
   border-width: 1px !important;
 }
+.drawer-link {
+  background-color: #111 !important;
+  color: #c5a044 !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.drawer-link:hover {
+  background-color: #1f1f1f !important;
+  color: #f0d089 !important;
+}
 </style>
 <style>
 .v-btn.black-pure {
@@ -520,5 +546,11 @@ ul {
 
 .v-btn.black-pure:hover {
   background-color: #1a1203 !important;
+}
+html,
+body,
+#app {
+  overflow-x: hidden !important;
+  max-width: 100vw;
 }
 </style>
