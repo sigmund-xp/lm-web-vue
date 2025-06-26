@@ -334,6 +334,7 @@ const navItems = [
   { text: "Clases", to: "#clases" },
   { text: "Venta de Caballos", to: "#venta" },
   { text: "Contacto", to: "#contacto" },
+  { text: "Ingresar", to: "/login" },
 ];
 
 const clases = [

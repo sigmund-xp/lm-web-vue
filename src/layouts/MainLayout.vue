@@ -53,12 +53,12 @@ const param = useParamsStore();
 
 onBeforeMount(() => {
   actualizarInfo();
+  loaded.value = true;
 });
 
 async function actualizarInfo() {
   await getParams();
   await getUserInfo();
-  loaded.value = true;
 }
 
 const getParams = async () => {
