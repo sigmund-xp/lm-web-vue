@@ -18,6 +18,11 @@ const routes = [
     component: StaticLandingView
   },
   {
+    path: '/caballo/:id',
+    name: 'CaballoDetalle',
+    component: () => import('@/views/CaballoDetalleView.vue'),
+  },
+  {
     path: '/',
     component: AuthLayout,    
     children: [

@@ -33,7 +33,9 @@
           <v-btn class="black-pure ml-1" @click.prevent="scrollTo('venta')"
             >Venta de Caballos</v-btn
           >
-          <v-btn class="black-pure ml-1" to="/contacto">Contacto</v-btn>
+          <v-btn class="black-pure ml-1" @click.prevent="scrollTo('contacto')"
+            >Contacto</v-btn
+          >
         </v-row>
         <v-btn
           class="text-black bg-gold font-weight-bold d-none d-md-inline-flex"
@@ -99,7 +101,7 @@
             color="#C5A044"
             class="mt-6 text-black font-weight-bold"
             rounded
-            to="#clases"
+            @click.prevent="scrollTo('clases')"
             >Ver Clases</v-btn
           >
         </div>
@@ -161,15 +163,13 @@
               </v-card>
             </v-col>
           </v-row>
-
-          <!-- Botón común para ambas versiones -->
           <div class="text-center mt-8">
             <v-btn
               color="#C5A044"
               class="text-black font-weight-bold"
               rounded
               size="large"
-              to="/clases"
+              @click.prevent="scrollTo('contacto')"
             >
               Más Información
             </v-btn>
@@ -198,6 +198,7 @@
               <v-card
                 class="elevation-8 horse-card"
                 :class="{ 'mr-md-4': index < caballos.length - 1 }"
+                :to="`/caballo/${caballo.id}`"
               >
                 <!-- Imagen con efecto de zoom -->
                 <div class="horse-image-container">
@@ -214,8 +215,6 @@
                     </v-chip>
                   </div>
                 </div>
-
-                <!-- Contenido de la tarjeta -->
                 <v-card-text class="pa-6">
                   <h3 class="text-gold text-h5 font-weight-bold mb-2">
                     {{ caballo.titulo }}
@@ -262,6 +261,7 @@
           </v-row>
         </v-container>
       </section>
+      <ContactoComponent />
     </v-main>
     <v-footer app color="#111" class="text-center text-md-left">
       <v-container class="py-8">
@@ -331,6 +331,7 @@
 </template>
 
 <script setup>
+import ContactoComponent from "@/components/ContactoComponent.vue";
 import { ref } from "vue";
 
 const mobileMenu = ref(false);
@@ -384,6 +385,7 @@ const clases = [
 
 const caballos = [
   {
+    id: "1",
     titulo: "Pura Sangre",
     img: "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35",
     edad: "5 años",
@@ -396,6 +398,7 @@ const caballos = [
     ],
   },
   {
+    id: "1",
     titulo: "Cuarto de Milla",
     img: "https://images.unsplash.com/photo-1553284966-3e6bfa8fba46",
     edad: "4 años",
@@ -408,6 +411,7 @@ const caballos = [
     ],
   },
   {
+    id: "1",
     titulo: "Árabe",
     img: "https://images.unsplash.com/photo-1553284966-b5a78b713b9e",
     edad: "6 años",
