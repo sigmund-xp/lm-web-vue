@@ -114,9 +114,4 @@ const enviarFormulario = () => {
   border: 1px solid rgba(197, 160, 68, 0.2);
   transition: all 0.3s ease;
 }
-.xcontacto-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(197, 160, 68, 0.1) !important;
-  border-color: #c5a044;
-}
 </style>

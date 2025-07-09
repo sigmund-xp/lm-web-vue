@@ -10,12 +10,24 @@ import ProfileView from '@/views/ProfileView.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import MainLayout from '@/layouts/MainLayout.vue'
 import VerifyUserComponent from '@/components/VerifyUserComponent.vue'
+import ContactoView from '@/views/ContactoView.vue'
+import VentasView from '@/views/VentasView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'homeStatic',
     component: StaticLandingView
+  },
+  {
+    path: '/contacto',
+    name: 'ContactoStatic',
+    component: ContactoView
+  },
+  {
+    path: '/venta',
+    name: 'VentasStatic',
+    component: VentasView
   },
   {
     path: '/caballo/:id',

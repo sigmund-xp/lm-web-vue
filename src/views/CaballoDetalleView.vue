@@ -24,20 +24,10 @@
           no-gutters
           style="flex: none; padding-right: 1em"
         >
-          <v-btn class="black-pure ml-1" @click.prevent="scrollTo('clases')"
-            >Clases</v-btn
-          >
-          <v-btn class="black-pure ml-1" @click.prevent="scrollTo('venta')"
-            >Venta de Caballos</v-btn
-          >
+          <v-btn class="black-pure ml-1" to="/">Inicio</v-btn>
+          <v-btn class="black-pure ml-1" to="/venta">Venta de Caballos</v-btn>
           <v-btn class="black-pure ml-1" to="/contacto">Contacto</v-btn>
         </v-row>
-        <v-btn
-          class="text-black bg-gold font-weight-bold d-none d-md-inline-flex"
-          rounded
-          to="/login"
-          >Ingresar</v-btn
-        >
         <v-app-bar-nav-icon
           class="d-md-none text-gold"
           @click="mobileMenu = !mobileMenu"
@@ -64,7 +54,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-main class="bg-black py-16" style="marxgin-top: 100px; background: red">
+    <v-main class="bg-grey-darken-4 py-16" style="marxgin-top: 100px; background: red">
       <v-container class="pt-16">
         <v-row class="mb-10">
           <v-col cols="12" md="6">
@@ -100,21 +90,47 @@
             </ul>
           </v-col>
           <v-col cols="12" md="6">
-            <v-carousel hide-delimiters show-arrows height="400" cycle class="rounded-xl">
-              <v-carousel-item
-                v-for="(img, index) in caballo.imgs"
+            <v-row>
+              <v-col
+                v-for="(item, index) in caballo.media"
                 :key="index"
-                :src="img"
-                cover
-              />
-            </v-carousel>
+                class="d-flex child-flex"
+                cols="4"
+              >
+                <div
+                  v-if="item.type === 'v'"
+                  class="video-wrapper"
+                  @click.prevent="abrirMedia(item)"
+                >
+                  <v-icon icon="mdi-filmstrip" class="video-icon" />
+                  <video
+                    playsinline
+                    preload="metadata"
+                    :src="item.src"
+                    class="horse-img video-thumb"
+                  />
+                </div>
+                <v-img
+                  v-else
+                  :lazy-src="item.src"
+                  :src="item.src"
+                  aspect-ratio="1"
+                  class="horse-img"
+                  @click.prevent="abrirMedia(item)"
+                >
+                  <template v-slot:placeholder>
+                    <v-row align="center" class="fill-height ma-0" justify="center">
+                      <v-progress-circular color="grey-lighten-5" indeterminate />
+                    </v-row>
+                  </template>
+                </v-img>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-container>
     </v-main>
-
-    <!-- Footer reutilizado -->
-    <v-footer app color="#111" class="text-center text-md-left">
+    <v-footer color="#111" class="text-center text-md-left">
       <v-container class="py-8">
         <v-row>
           <v-col cols="12" md="4" class="mb-4 mb-md-0">
@@ -158,6 +174,36 @@
         </v-row>
       </v-container>
     </v-footer>
+    <v-dialog v-model="dialog" width="60vw" transition="dialog-bottom-transition">
+      <v-card class="bg-black">
+        <v-toolbar flat color="black">
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+
+        <v-responsive
+          v-if="imagenSeleccionada.type === 'v'"
+          :aspect-ratio="16 / 9"
+          max-width="100%"
+          style="text-align: center"
+          class="w-100"
+        >
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            :src="imagenSeleccionada.src"
+            class="horse-img video-thumb"
+          />
+        </v-responsive>
+        <!-- IMAGEN -->
+        <v-responsive v-else :aspect-ratio="4 / 3" max-width="100%" class="w-100">
+          <v-img :src="imagenSeleccionada.src" cover class="w-100 h-100" />
+        </v-responsive>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -167,23 +213,26 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const mobileMenu = ref(false);
+const dialog = ref(false);
+const imagenSeleccionada = ref(null);
 
 const navItems = [
-  { text: "Inicio", to: "#inicio" },
-  { text: "Clases", to: "#clases" },
-  { text: "Venta de Caballos", to: "#venta" },
-  { text: "Contacto", to: "#contacto" },
-  { text: "Ingresar", to: "/login" },
+  { text: "Inicio", to: "/" },
+  { text: "Contacto", to: "/contacto" },
+  { text: "Venta de Caballos", to: "/venta" },
 ];
 
 const caballo = {
   titulo: "Pura Sangre",
-  imgs: [
-    "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35",
-    "https://images.unsplash.com/photo-1553284966-3e6bfa8fba46",
-    "https://images.unsplash.com/photo-1553284966-b5a78b713b9e",
+  media: [
+    //    { src: "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35", type: "i" },
+    //    { src: "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35", type: "i" },
+    //    { src: "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35", type: "i" },
+    //    { src: "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35", type: "i" },
+    { src: "../horno.mp4", type: "v" },
+    { src: "https://images.unsplash.com/photo-1506220926022-cc5c12acdb35", type: "i" },
+    { src: "../test.mp4", type: "v" },
   ],
-  video: "https://www.youtube.com/embed/VIDEO_ID_AQUI",
   edad: "5 años",
   altura: "1.65m",
   raza: "Pura Sangre Inglés",
@@ -204,9 +253,16 @@ const scrollTo = (id) => {
     element.scrollIntoView({ behavior: "smooth" });
   }
 };
+const abrirMedia = (item) => {
+  imagenSeleccionada.value = item;
+  dialog.value = true;
+};
 </script>
 
 <style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
 .bg-gold {
   background-color: #c5a044 !important;
 }
@@ -219,12 +275,47 @@ const scrollTo = (id) => {
   background-color: #1a1203 !important;
 }
 .drawer-link {
-  backgxround-color: #111 !important;
+  background-color: #111 !important;
   color: #c5a044 !important;
   transition: background-color 0.3s ease;
 }
 .drawer-link:hover {
-  backxground-color: #1f1f1f !important;
+  background-color: #1f1f1f !important;
   color: #f0d089 !important;
+}
+.horse-img {
+  transition: all 0.4s ease;
+  background: #1e1e1e !important;
+  border: 1px solid rgba(197, 160, 68, 0.2);
+}
+.horse-img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(197, 160, 68, 0.1) !important;
+  border-color: #c5a044;
+}
+.video-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  display: inline-block;
+}
+.video-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: auto;
+}
+.video-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  z-index: 2;
 }
 </style>

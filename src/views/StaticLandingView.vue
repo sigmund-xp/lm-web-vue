@@ -74,8 +74,7 @@
         class="d-flex flex-column align-center justify-center text-center"
         style="
           height: 100vh;
-          background: url('https://images.unsplash.com/photo-1506220926022-cc5c12acdb35?auto=format&fit=crop&w=1470&q=80')
-            center center / cover no-repeat;
+          background: url('/fondo.png') center center / cover no-repeat;
           position: relative;
         "
       >
@@ -148,7 +147,7 @@
               :key="'desktop-' + index"
             >
               <v-card class="bg-black text-grey hover-card">
-                <v-img :src="clase.img" height="250" cover class="grayscale"></v-img>
+                <v-img :src="clase.img" height="300" cover class="grayscale"></v-img>
                 <v-card-text class="pa-6">
                   <h3 class="text-gold text-h6 mb-3">{{ clase.titulo }}</h3>
                   <v-divider color="#C5A044" class="mb-3"></v-divider>
@@ -347,7 +346,7 @@ const navItems = [
 const clases = [
   {
     titulo: "Clases para Niños",
-    img: "https://images.unsplash.com/photo-1605000797499-95e51c52685e",
+    img: "/cninos.jpg",
     fecha: "Martes a Domingo",
     beneficios: [
       "Iniciación ecuestre segura",
@@ -359,7 +358,7 @@ const clases = [
   },
   {
     titulo: "Clases para Adultos",
-    img: "https://images.unsplash.com/photo-1553284965-5dd8352ff1bd",
+    img: "/cadultos.png",
     fecha: "Martes a Domingo",
     beneficios: [
       "Técnicas básicas/intermedias",
@@ -371,7 +370,7 @@ const clases = [
   },
   {
     titulo: "Clases Avanzadas",
-    img: "https://images.unsplash.com/photo-1569517282132-25d22f4573e6",
+    img: "/cavanzadas.jpg",
     fecha: "Martes a Domingo",
     beneficios: [
       "Saltos hasta 1.10m",
