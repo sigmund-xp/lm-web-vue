@@ -74,7 +74,7 @@
         class="d-flex flex-column align-center justify-center text-center"
         style="
           height: 100vh;
-          background: url('/fondo.png') center center / cover no-repeat;
+          background: url('/fondo_celu.png') center center / cover no-repeat;
           position: relative;
         "
       >
