@@ -14,7 +14,7 @@
         fluid
       >
         <v-img
-          :src="require('../assets/logo-lm-header.png')"
+          :src="require('../assets/logo-lm-header.svg')"
           height="80"
           max-width="200"
           contain
@@ -74,7 +74,7 @@
         class="d-flex flex-column align-center justify-center text-center"
         style="
           height: 100vh;
-          background: url('/fondo_celu.png') center center / cover no-repeat;
+          background: url('/fondo_celu.webp') center center / cover no-repeat;
           position: relative;
         "
       >
@@ -268,7 +268,7 @@
           <!-- Columna 1: Logo y descripción -->
           <v-col cols="12" md="4" class="mb-4 mb-md-0">
             <v-img
-              :src="require('../assets/logo-lm-header.png')"
+              :src="require('../assets/logo-lm-header.svg')"
               max-width="120"
               class="mx-auto mx-md-0 mb-4"
             />
@@ -346,7 +346,7 @@ const navItems = [
 const clases = [
   {
     titulo: "Clases para Niños",
-    img: "/cninos.jpg",
+    img: "/cninos.webp",
     fecha: "Martes a Domingo",
     beneficios: [
       "Iniciación ecuestre segura",
@@ -358,7 +358,7 @@ const clases = [
   },
   {
     titulo: "Clases para Adultos",
-    img: "/cadultos.png",
+    img: "/cadultos.webp",
     fecha: "Martes a Domingo",
     beneficios: [
       "Técnicas básicas/intermedias",
@@ -370,7 +370,7 @@ const clases = [
   },
   {
     titulo: "Clases Avanzadas",
-    img: "/cavanzadas.jpg",
+    img: "/cavanzadas.webp",
     fecha: "Martes a Domingo",
     beneficios: [
       "Saltos hasta 1.10m",
